@@ -20,5 +20,5 @@ echo -e "\e[100mInstall NPM Packages..."
 npm install
 
 
-### Clean Build Artifacts that don't need to be deployed
-rm -rf node_modules
+### Don't Clean Build Artifacts (yet)
+### They'll be needed to run Grunt, etc.
