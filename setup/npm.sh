@@ -10,9 +10,11 @@ echo -e "\e[100m/setup/npm.sh"
 echo -e "\e[100m=================================================================================================="
 
 
+### Install NPM
+npm -g install npm@latest
+
+
 ### Install NPM Packages
-#npm install -g npm
-#npm install -g vinyl-fs@2.2.1
 echo -e "\e[100mInstall NPM Packages..."
 npm install
 

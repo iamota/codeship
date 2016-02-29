@@ -14,7 +14,7 @@ echo -e "\e[100m================================================================
 set -e
 
 
-### Install Grunt (if necessary)
+### Install Grunt
 echo -e "\e[100mInstall Grunt..."
 npm install -g grunt-cli
 
