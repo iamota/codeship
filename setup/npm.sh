@@ -11,6 +11,7 @@ echo -e "\e[100m================================================================
 
 
 ### Install NPM
+echo -e "\e[100mInstall NPM..."
 npm -g install npm@latest
 
 

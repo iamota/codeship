@@ -14,14 +14,14 @@ echo -e "\e[100m================================================================
 set -e
 
 
-### Cache Bower Dependencies
-echo -e "\e[100mCache Bower Dependencies..."
-curl -sSL https://raw.githubusercontent.com/codeship/scripts/master/cache/bower.sh | bash
-
-
 ### Install Bower (if necessary)
 echo -e "\e[100mInstall Bower..."
 npm install -g bower
+
+
+### Cache Bower Dependencies
+echo -e "\e[100mCache Bower Dependencies..."
+curl -sSL https://raw.githubusercontent.com/codeship/scripts/master/cache/bower.sh | bash
 
 
 ### Install Bower Packages
