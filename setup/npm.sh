@@ -21,5 +21,4 @@ npm install
 
 
 ### Clean Build Artifacts that don't need to be deployed
-rm -rf package.json
 rm -rf node_modules
