@@ -8,6 +8,11 @@
 # \curl -sSL https://raw.githubusercontent.com/iamota/codeship/master/setup/php.sh | bash -s
 
 
+echo -e "\e[100m=================================================================================================="
+echo -e "\e[100m/setup/php.sh"
+echo -e "\e[100m=================================================================================================="
+
+
 ### Fail the deployment on the first error
 set -e
 
@@ -16,12 +21,14 @@ set -e
 PHP_VERSION=${PHP_VERSION:?'You need to configure the PHP_VERSION environment variable! (e.g. 5.5 or 5.6)'}
 
 
-### Set ENV Variables
+### Configure PHP
+echo -e "\e[100mConfigure PHP..."
 phpenv local $PHP_VERSION
 export PHP_INI="${HOME}/.phpenv/versions/${PHP_VERSION}/etc/php.ini"
 
 
 ### Disable PHP XDebug (helps compile faster)
+echo -e "\e[100mDisable PHP XDebug..."
 #cat $PHP_INI
 sed -i "s/zend_extension=.*\/xdebug.so/;xdebug disabled/" $PHP_INI
 sed -i "s/xdebug.remote_autostart=.*/xdebug.remote_autostart=0/" $PHP_INI
