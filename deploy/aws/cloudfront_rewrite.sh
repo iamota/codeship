@@ -3,7 +3,11 @@
 #
 # Add the following environment variables to your project configuration.
 # * AWS_CLOUDFRONT_KEYS     - CSV of ENV variable names that contain CloudFront distiribution IDs
-# * For each value in AWS_CLOUDFRONT_KEYS, define an ENV variable containing the asspcoated CloudFront distiribution ID
+#                             For each value in AWS_CLOUDFRONT_KEYS, define an ENV variable containing the
+#                             associated CloudFront distiribution ID (e.g. export AWS_CLOUDFRONT_CDN="abc123")
+# * AWS_DEFAULT_REGION      - AWS Region being used (e.g. us-west-2)
+# * AWS_ACCESS_KEY_ID       - AWS Access Key ID for the user with write permission to the AWS_APP_S3 bucket
+# * AWS_SECRET_ACCESS_KEY   - AWS Secret Access Key for the user with write permission to the AWS_APP_S3 bucket
 #
 # Include in your builds via
 # \curl -sSL https://raw.githubusercontent.com/iamota/codeship/master/deploy/aws/cloudfront_rewrite.sh | bash -s
@@ -28,8 +32,17 @@ AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:?'You need to configure the AWS_SE
 AWS_CLOUDFRONT_KEYS=${AWS_CLOUDFRONT_KEYS:?'You need to configure the AWS_CLOUDFRONT_KEYS environment variable!'}
 
 
+### Check that nginx.conf exists
+if [ -f "nginx.conf" ];
+then
+   echo -e "\e[1;40;32mFile nginx.conf exists"
+else
+   echo -e "\e[1;40;32mFile nginx.conf does not exist" >&2
+fi
+
+
 ### Perform Dynamic nginx.conf String Replacement
-for i in $(echo $AWS_CLOUDFRONT_KEYS | sed "s/,/ /g")
+for i in $(echo ${AWS_CLOUDFRONT_KEYS} | sed "s/,/ /g")
 do
     temp=${$i:?'You need to configure the $i environment variable specified in your AWS_CLOUDFRONT_KEYS!'}
     sed -i "s/\${$i}/${$i}/" nginx.conf
