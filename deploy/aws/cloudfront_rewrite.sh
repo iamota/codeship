@@ -37,13 +37,15 @@ if [ -f "nginx.conf" ];
 then
    echo -e "\e[1;40;32mFile nginx.conf exists"
 else
-   echo -e "\e[1;40;32mFile nginx.conf does not exist" >&2
+   echo -e "\e[1;40;31mFile nginx.conf does not exist" >&2
+   exit 1
 fi
 
 
 ### Perform Dynamic nginx.conf String Replacement
-for i in $(echo ${AWS_CLOUDFRONT_KEYS} | sed "s/,/ /g")
+for key in $(echo ${AWS_CLOUDFRONT_KEYS} | sed "s/,/ /g")
 do
-    temp=${$i:?'You need to configure the $i environment variable specified in your AWS_CLOUDFRONT_KEYS!'}
-    sed -i "s/\${$i}/${$i}/" nginx.conf
+    value=${!key}
+    temp=${value:?"You need to configure the ${key} environment variable specified in your AWS_CLOUDFRONT_KEYS!"}
+    sed -i "s/\${$key}/$value/" nginx.conf
 done
