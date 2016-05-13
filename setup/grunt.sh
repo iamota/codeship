@@ -1,6 +1,9 @@
 #!/bin/bash
 # Run Grunt build tasks
 #
+# Add the following environment variables to your project configuration.
+# * ENVIRONMENT
+#
 # Include in your builds via
 # \curl -sSL https://raw.githubusercontent.com/iamota/codeship/master/setup/grunt.sh | bash -s
 
@@ -14,6 +17,10 @@ echo -e "\e[1;40;32m============================================================
 set -e
 
 
+### Verify ENV variables
+ENVIRONMENT=${ENVIRONMENT:?'You need to configure the ENVIRONMENT environment variable! (dev, staging, or prod)'}
+
+
 ### Install Grunt
 echo -e "\e[1;40;32mInstall Grunt..."
 npm install -g grunt-cli
@@ -21,7 +28,7 @@ npm install -g grunt-cli
 
 ### Run Grunt
 echo -e "\e[1;40;32mRun Grunt..."
-grunt compile --verbose
+grunt compile --env=${ENVIRONMENT} --verbose
 
 
 ### Clean Build Artifacts that don't need to be deployed
