@@ -29,3 +29,12 @@ curl -sSL https://raw.githubusercontent.com/iamota/codeship/master/setup/grunt.s
 ### Cleanup Build Artifacts
 curl -sSL https://raw.githubusercontent.com/iamota/codeship/master/setup/clean.sh | bash -s
 ```
+
+### Magento 2 Installations!
+
+Magento 2 requires `composer.json` to be deployed on the server. The base `setup/composer.sh` script deletes the `composer.json` upon completion. The original bash script has been modified to only delete `composer.lock`.
+
+**To install Magento 2, replace line 10 below with the following:**
+```
+curl -sSL https://raw.githubusercontent.com/iamota/codeship/master/setup/composer-mage.sh | bash -s
+```
