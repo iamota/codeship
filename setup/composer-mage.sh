@@ -32,6 +32,5 @@ echo -e "\e[1;40;32mInstall Composer Packages..."
 composer install --prefer-dist --no-interaction --no-dev
 
 
-### Clean Build Artifacts that don't need to be deployed
-echo -e "\e[1;40;32mCleanup Composer..."
-rm -rf composer.lock
+### Leaving Composer files on server
+echo -e "\e[1;40;32mComposer files are NOT deleted..."
