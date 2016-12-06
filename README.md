@@ -32,7 +32,7 @@ curl -sSL https://raw.githubusercontent.com/iamota/codeship/master/setup/clean.s
 
 ### Magento 2 Installations!
 
-Magento 2 requires `composer.json` to be deployed on the server. The base `setup/composer.sh` script deletes the `composer.json` and `composer.json` upon completion. Thew script leaves them in place, to be deployed to the server.
+Magento 2 requires `composer.json` to be deployed on the server. The base `setup/composer.sh` script deletes the `composer.json` and `composer.json` upon completion. The new `composer-mage.sh` script leaves them intact, to be deployed to the server.
 
 **To install Magento 2, replace line 10 above with the following:**
 ```
