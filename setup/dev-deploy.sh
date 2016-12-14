@@ -4,9 +4,6 @@
 # Include in your builds via
 # \curl -sSL https://raw.githubusercontent.com/iamota/codeship/master/setup/dev-deploy.sh | bash -s
 
-
-### Install AWS CLI
-pip install awscli
 #
 ### Get ElasticIp of the stack
 elasticip=$(aws opsworks --region us-east-1 describe-instances --stack-id ${AWS_STACK_ID} --output text --query 'Instances[*].[ElasticIp]')
