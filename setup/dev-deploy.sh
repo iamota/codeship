@@ -13,7 +13,7 @@ elasticip=$(aws opsworks --region us-east-1 describe-instances --stack-id ${AWS_
 echo $elasticip
 #
 # Check if SSH is added to the instance
-if [ ssh codeship@$elasticip ]; then
+if [[ ssh codeship@$elasticip ]]; then
 #
 ### Rsync directly into the instance for automated testing
 # File transfer test
@@ -24,21 +24,7 @@ ssh codeship@$elasticip sudo chown -R apache:apache /mnt/httpd/${APP_NAME//-/_}/
 ### remove timber cache from uploads folder
 ssh codeship@$elasticip sudo rm -rf /mnt/httpd/${APP_NAME//-/_}/current/wp-content/uploads/cache/timber/
 #
-#
-### Zip the application (ignore any files named .git* in any folder)
-zip -r "${APP_NAME}-${ENVIRONMENT}.zip" .
-#
-### Upload Compiled Application to S3
-aws s3 cp ${APP_NAME}-${ENVIRONMENT}.zip s3://${AWS_STACK_S3}/${AWS_STACK_NAME}-${ENVIRONMENT}.zip
-#
 else
-#
-### Zip the application (ignore any files named .git* in any folder)
-zip -r "${APP_NAME}-${ENVIRONMENT}.zip" .
-#
-### Upload Compiled Application to S3
-aws s3 cp ${APP_NAME}-${ENVIRONMENT}.zip s3://${AWS_STACK_S3}/${AWS_STACK_NAME}-${ENVIRONMENT}.zip
-#
 #
 ### Trigger OpsWorks Deployment
 aws opsworks --region us-east-1 create-deployment --stack-id ${AWS_STACK_ID} --app-id ${AWS_APP_ID} --command "{\"Name\": \"deploy\"}"
