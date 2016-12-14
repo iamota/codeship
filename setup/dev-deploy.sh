@@ -10,7 +10,7 @@ elasticip=$(aws opsworks --region us-east-1 describe-instances --stack-id ${AWS_
 echo $elasticip
 #
 # Check if SSH is added to the instance
-if [ ssh "codeship@$elasticip" ]; then
+if ssh codeship@$elasticip ; then
 	### Rsync directly into the instance for automated testing
 	### Some of the app name uses dash instead of underscore. Need to make this more consistent to avoid error.
 	rsync -rave "ssh" --rsync-path="sudo rsync" . codeship@$elasticip:/mnt/httpd/${APP_NAME//-/_}/current/
