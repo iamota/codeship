@@ -19,16 +19,21 @@ set -e
 
 ### Verify ENV variables
 GITHUB_ACCESS_TOKEN=${GITHUB_ACCESS_TOKEN:?'You need to configure the GITHUB_ACCESS_TOKEN environment variable! (https://help.github.com/articles/creating-an-access-token-for-command-line-use/)'}
-
+MAGENTO_PUBLIC_KEY=${MAGENTO_PUBLIC_KEY:?'You need to configure the MAGENTO_PUBLIC_KEY environment variable!'}
+MAGENTO_PRIVATE_KEY=${MAGENTO_PRIVATE_KEY:?'You need to configure the MAGENTO_PRIVATE_KEY environment variable!'}
 
 ### Configure Composer
 echo -e "\e[1;40;32mConfigure Composer..."
 export COMPOSER_HOME="${HOME}/cache/composer"
 composer config -g github-oauth.github.com $GITHUB_ACCESS_TOKEN
-
+composer config -g http-basic.repo.magento.com $MAGENTO_PUBLIC_KEY $MAGENTO_PRIVATE_KEY
 
 ### Install Composer Packages
 echo -e "\e[1;40;32mInstall Composer Packages..."
+composer install --prefer-dist --no-interaction --no-dev
+
+cd ${HOME}/mage
+
 composer install --prefer-dist --no-interaction --no-dev
 
 
