@@ -32,7 +32,7 @@ composer config -g http-basic.repo.magento.com $MAGENTO_PUBLIC_KEY $MAGENTO_PRIV
 echo -e "\e[1;40;32mInstall Composer Packages..."
 composer install --prefer-dist --no-interaction --no-dev
 
-cd ${HOME}/mage
+cd mage
 
 composer install --prefer-dist --no-interaction --no-dev
 
