@@ -29,11 +29,11 @@ composer config -g github-oauth.github.com $GITHUB_ACCESS_TOKEN
 composer config -g http-basic.repo.magento.com $MAGENTO_PUBLIC_KEY $MAGENTO_PRIVATE_KEY
 
 ### Install Composer Packages
-echo -e "\e[1;40;32mInstall Composer Packages..."
-composer install --prefer-dist --no-interaction --no-dev
-
-cd mage
-
+echo -e "\e[1;40;32mInstall Magento 2 Composer Packages..."
+if [ -d "${MAGENTO_SUB_DIR}" ]; then
+	echo - "\e[1;40;32mChanging to Mage dir: ${MAGENTO_SUB_DIR}"
+	cd $MAGENTO_SUB_DIR
+fi;
 composer install --prefer-dist --no-interaction --no-dev
 
 
