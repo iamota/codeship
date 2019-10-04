@@ -29,7 +29,7 @@ composer config -g github-oauth.github.com $GITHUB_ACCESS_TOKEN
 
 ### Install Composer Packages
 echo -e "\e[1;40;32mInstall Composer Packages..."
-composer install --prefer-dist --no-interaction --no-dev
+composer install --prefer-dist --no-interaction --no-dev --verbose
 
 
 ### Clean Build Artifacts that don't need to be deployed
