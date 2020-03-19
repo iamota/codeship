@@ -19,6 +19,7 @@ echo -e "\e[1;40;32mCleanup Git..."
 git clean -fd
 rm -rf .git
 rm -rf .gitignore
+rm -rf .gitattributes
 
 
 ### Clean Composer
