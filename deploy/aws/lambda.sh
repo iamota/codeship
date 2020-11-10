@@ -22,11 +22,11 @@ set -e
 
 
 ### Verify ENV variables
-AWS_ACCESS_KEY_ID       =${AWS_ACCESS_KEY_ID:?      'You need to configure the AWS_ACCESS_KEY_ID environment variable!'}
-AWS_SECRET_ACCESS_KEY   =${AWS_SECRET_ACCESS_KEY:?  'You need to configure the AWS_SECRET_ACCESS_KEY environment variable!'}
-AWS_DEFAULT_REGION      =${AWS_DEFAULT_REGION:?     'You need to configure the AWS_DEFAULT_REGION environment variable!'}
-FUNCTION_NAME           =${FUNCTION_NAME:?          'You need to configure the FUNCTION_NAME environment variable! (e.g. my-function)'}
-FUNCTION_PATH           =${FUNCTION_PATH:?          'You need to configure the FUNCTION_PATH environment variable! (e.g. some/path/to/code)'}
+AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:?'You need to configure the AWS_ACCESS_KEY_ID environment variable!'}
+AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:?'You need to configure the AWS_SECRET_ACCESS_KEY environment variable!'}
+AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION:?'You need to configure the AWS_DEFAULT_REGION environment variable!'}
+FUNCTION_NAME=${FUNCTION_NAME:?'You need to configure the FUNCTION_NAME environment variable! (e.g. my-function)'}
+FUNCTION_PATH=${FUNCTION_PATH:?'You need to configure the FUNCTION_PATH environment variable! (e.g. some/path/to/code)'}
 
 
 ### Install AWS CLI
