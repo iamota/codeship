@@ -33,13 +33,13 @@ FUNCTION_PATH           =${FUNCTION_PATH:?          'You need to configure the F
 pip install awscli
 
 # Access the Function's Code
-cd $HOME/clone/{$FUNCTION_PATH}
+cd $HOME/clone/${FUNCTION_PATH}
 
 # Zip the Code
 zip -r ${FUNCTION_NAME}.zip .
 
 # Update the latest version of the code
-FUNCTION_SHA256=`aws lambda update-function-code --function-name $FUNCTION_NAME --zip-file fileb://{$FUNCTION_NAME}.zip | jq -r .CodeSha256`
+FUNCTION_SHA256=`aws lambda update-function-code --function-name $FUNCTION_NAME --zip-file fileb://${FUNCTION_NAME}.zip | jq -r .CodeSha256`
 echo $FUNCTION_SHA256
 
 # Publishing a new Version of the Lambda function
