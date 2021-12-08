@@ -43,40 +43,40 @@ sudo service nginx reload
 echo "Un-Registering Logs with CloudWatch..."
 
 # Access Logs (HTTP)
-sudo crudini --del /etc/awslogs/awslogs.conf "${SERVER_NAME}/${APP_NAME}/access.log"                "file"            "/var/log/nginx/${APP_NAME}.access.log"
+sudo crudini --del /etc/awslogs/awslogs.conf "${SERVER_NAME}/${APP_NAME}/access.log"
 
 # Access Logs (HTTPS)
-sudo crudini --del /etc/awslogs/awslogs.conf "${SERVER_NAME}/${APP_NAME}/ssl.access.log"            "file"            "/var/log/nginx/${APP_NAME}.ssl.access.log"
+sudo crudini --del /etc/awslogs/awslogs.conf "${SERVER_NAME}/${APP_NAME}/ssl.access.log"
 
 # Error Logs
-sudo crudini --del /etc/awslogs/awslogs.conf "${SERVER_NAME}/${APP_NAME}/error.log"                 "file"            "/var/log/nginx/${APP_NAME}.error.log"
+sudo crudini --del /etc/awslogs/awslogs.conf "${SERVER_NAME}/${APP_NAME}/error.log"
 
 # Sucuri Whitelist Log
-sudo crudini --del /etc/awslogs/awslogs.conf "${SERVER_NAME}/${APP_NAME}/sucuri-whitelist.log"      "file"            "/mnt/nginx/${APP_NAME}/log/sucuri-whitelist.log"
+sudo crudini --del /etc/awslogs/awslogs.conf "${SERVER_NAME}/${APP_NAME}/sucuri-whitelist.log"
 
 # Sucuri Last Logins Log
-sudo crudini --del /etc/awslogs/awslogs.conf "${SERVER_NAME}/${APP_NAME}/sucuri-lastlogins.php"     "file"            "/mnt/nginx/${APP_NAME}/log/sucuri-lastlogins.php"
+sudo crudini --del /etc/awslogs/awslogs.conf "${SERVER_NAME}/${APP_NAME}/sucuri-lastlogins.php"
 
 # Sucuri Audit Log
-sudo crudini --del /etc/awslogs/awslogs.conf "${SERVER_NAME}/${APP_NAME}/sucuri-auditlogs.php"      "file"            "/mnt/nginx/${APP_NAME}/log/sucuri-auditlogs.php"
+sudo crudini --del /etc/awslogs/awslogs.conf "${SERVER_NAME}/${APP_NAME}/sucuri-auditlogs.php"
 
 # Sucuri Audit Queue Log
-sudo crudini --del /etc/awslogs/awslogs.conf "${SERVER_NAME}/${APP_NAME}/sucuri-auditqueue.php"     "file"            "/mnt/nginx/${APP_NAME}/log/sucuri-auditqueue.php"
+sudo crudini --del /etc/awslogs/awslogs.conf "${SERVER_NAME}/${APP_NAME}/sucuri-auditqueue.php"
 
 # Sucuri Failed Logins Log
-sudo crudini --del /etc/awslogs/awslogs.conf "${SERVER_NAME}/${APP_NAME}/sucuri-failedlogins.php"   "file"            "/mnt/nginx/${APP_NAME}/log/sucuri-failedlogins.php"
+sudo crudini --del /etc/awslogs/awslogs.conf "${SERVER_NAME}/${APP_NAME}/sucuri-failedlogins.php"
 
 # Sucuri Hook Data Log
-sudo crudini --del /etc/awslogs/awslogs.conf "${SERVER_NAME}/${APP_NAME}/sucuri-hookdata.php"       "file"            "/mnt/nginx/${APP_NAME}/log/sucuri-hookdata.php"
+sudo crudini --del /etc/awslogs/awslogs.conf "${SERVER_NAME}/${APP_NAME}/sucuri-hookdata.php"
 
 # Sucuri Ignore Scanning Log
-sudo crudini --del /etc/awslogs/awslogs.conf "${SERVER_NAME}/${APP_NAME}/sucuri-ignorescanning.php" "file"            "/mnt/nginx/${APP_NAME}/log/sucuri-ignorescanning.php"
+sudo crudini --del /etc/awslogs/awslogs.conf "${SERVER_NAME}/${APP_NAME}/sucuri-ignorescanning.php"
 
 # Sucuri Integrity Log
-sudo crudini --del /etc/awslogs/awslogs.conf "${SERVER_NAME}/${APP_NAME}/sucuri-integrity.php"      "file"            "/mnt/nginx/${APP_NAME}/log/sucuri-integrity.php"
+sudo crudini --del /etc/awslogs/awslogs.conf "${SERVER_NAME}/${APP_NAME}/sucuri-integrity.php"
 
 # Sucuri Site Check Log
-sudo crudini --del /etc/awslogs/awslogs.conf "${SERVER_NAME}/${APP_NAME}/sucuri-sitecheck.php"      "file"            "/mnt/nginx/${APP_NAME}/log/sucuri-sitecheck.php"
+sudo crudini --del /etc/awslogs/awslogs.conf "${SERVER_NAME}/${APP_NAME}/sucuri-sitecheck.php"
 
 # Restart CloudWatch Log Monitor
 echo "Restarting CloudWatch log monitor..."
