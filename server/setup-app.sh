@@ -38,6 +38,9 @@ then
     exit 1
 fi
 
+# Ensure umask is set (files 664, directors 775)
+umsak 002
+
 # Prepare folder structure
 echo "Creating App folders..."
 mkdir /mnt/nginx/${APP_NAME} -m 775
