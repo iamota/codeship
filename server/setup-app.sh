@@ -18,9 +18,6 @@ set -e
 read -p "App Name (e.g. iamota_com): " APP_NAME
 read -p "App Primary URL (e.g. https://www.iamota.com): " APP_URL
 
-read -s -p "Codeship SSH Key: " CODESHIP_KEY
-echo ""
-
 
 # Verify Inputs
 echo ""
@@ -30,9 +27,6 @@ echo "=============================================================="
 echo "App Name:          ${APP_NAME}"
 echo "App Primary URL:   ${APP_URL}"
 echo "App Path:          /mnt/nginx/${APP_NAME}/current"
-echo "--------------------------------------------------------------"
-echo "Codeship SSH Key:"
-echo "${CODESHIP_KEY}"
 echo "=============================================================="
 
 # Confirm Settings
@@ -211,10 +205,6 @@ SUCURI_JSON=$(jq   -n -c \
 # Write Sucuri Config
 echo "Creating sucuri-settings.php..."
 echo "<?php exit(0); ?>${SUCURI_JSON}" > /mnt/nginx/${APP_NAME}/current/log/sucuri-settings.php
-
-# Add Codeship Key
-echo "Adding Codeship key..."
-echo "${CODESHIP_KEY}" | sudo tee -a /home/codeship/.ssh/authorized_keys >/dev/null
 
 # Done
 echo "App ${APP_NAME} has been initalized."
