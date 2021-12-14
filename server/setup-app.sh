@@ -39,7 +39,7 @@ then
 fi
 
 # Ensure umask is set (files 664, directors 775)
-umsak 002
+umask 002
 
 # Prepare folder structure
 echo "Creating App folders..."
