@@ -17,6 +17,7 @@ set -e
 # Read User Inputs
 read -p "App Name (e.g. iamota_com): " APP_NAME
 read -p "App Primary URL (e.g. https://www.iamota.com): " APP_URL
+read -p "App Domains (e.g. iamota.com,www.iamota.com): " APP_DOMAINS
 
 
 # Verify Inputs
@@ -26,6 +27,7 @@ echo "CONFIRM SETTINGS"
 echo "=============================================================="
 echo "App Name:          ${APP_NAME}"
 echo "App Primary URL:   ${APP_URL}"
+echo "App Domains:       ${APP_DOMAINS}"
 echo "App Path:          /mnt/nginx/${APP_NAME}/current"
 echo "=============================================================="
 
@@ -61,6 +63,23 @@ echo "Registering a self-signed SSL certificate..."
 sudo /etc/ssl/certs/make-dummy-cert /etc/ssl/${APP_NAME}.crt
 sudo cp /etc/ssl/${APP_NAME}.crt /etc/ssl/${APP_NAME}.key
 
+# Register a Let's Encrypt Certificate
+APP_DOMAINS_LIST=${APP_DOMAINS//,/ -d }
+sudo certbot certonly --debug --agree-tos --email devops@iamota.com --webroot --webroot-path /mnt/nginx/${APP_NAME}/current -d ${APP_DOMAINS_LIST} -n --cert-name ${APP_NAME}
+
+# If successful, remove existing self signed certificate
+existing_certificate=/etc/ssl/${APP_NAME}.crt
+new_certificate=/etc/letsencrypt/live/${APP_NAME}/fullchain.pem
+if sudo test -e "$existing_certificate" && sudo test -e "$new_certificate"; then
+    # Remove self signed certificate
+    sudo rm -f /etc/ssl/${APP_NAME}.crt
+    sudo rm -f /etc/ssl/${APP_NAME}.key
+
+    # Symlink valid certifiate to the /etc/ssl/ folder
+    sudo ln -sf /etc/letsencrypt/live/${APP_NAME}/fullchain.pem /etc/ssl/${APP_NAME}.crt
+    sudo ln -sf /etc/letsencrypt/live/${APP_NAME}/privkey.pem /etc/ssl/${APP_NAME}.key
+fi
+
 # Register Site with Nginx
 echo "Registering Site with Nginx..."
 touch /mnt/nginx/${APP_NAME}/current/nginx.conf
@@ -68,7 +87,7 @@ sudo tee /etc/nginx/conf.d/${APP_NAME}.conf << EOF
 include /mnt/nginx/${APP_NAME}/current/nginx.conf;
 EOF
 
-# Reload Nginx
+# Reload Nginx (load site config + new certificates)
 echo "Reloading Nginx..."
 sudo service nginx reload
 
