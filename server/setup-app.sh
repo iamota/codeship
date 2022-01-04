@@ -3,12 +3,12 @@
 ###############################################################################
 # Setup an App
 ###############################################################################
-# - Create folders for /mnt/ngnix/[app-name]/curernt
+# - Create folders for /mnt/ngnix/[app-name]/current
 # - Create .env stub
-# - Create database
-# - Register wtih Nginx
+# - Register SSL certificate (self-signed or Let's Encrypt)
+# - Register with Nginx
 # - Register with CloudWatch
-# - Add Codeship delpoyment keys
+# - Configure Sucuri
 ###############################################################################
 
 # Abort on Error
