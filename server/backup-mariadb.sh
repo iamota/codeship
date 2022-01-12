@@ -1,3 +1,11 @@
+TODAY=`date +"%Y-%b-%d"`
+BACKUP_DB_PATH="/tmp/db-backups"
+BACKUP_DB_S3="iamota-db-backups"
+
+ENVIRONMENT="${ENVIRONMENT:-unknown}"
+SERVER_NAME="${SERVER_NAME:-iamota-${ENVIRONMENT}}"
+
+        
 for d in /mnt/nginx/* ; do
     [ -L "${d%/}" ] && continue
     
@@ -5,7 +13,7 @@ for d in /mnt/nginx/* ; do
     echo "-- Checking for .env..."
     if test -e "$d/current/.env"; then
         echo "-- Gathering DB credentials..."
-      
+
         BACKUP_DB_HOST=`crudini --get $d/current/.env "" "DB_HOST"`
         BACKUP_DB_USER=`crudini --get $d/current/.env "" "DB_USER"`
         BACKUP_DB_PASSWORD=`crudini --get $d/current/.env "" "DB_PASSWORD"`
@@ -14,7 +22,12 @@ for d in /mnt/nginx/* ; do
         if [[ ${BACKUP_DB_HOST} && ${BACKUP_DB_USER} && ${BACKUP_DB_PASSWORD} && ${BACKUP_DB_NAME} ]]; then
             echo "-- Backing up ${BACKUP_DB_NAME} from ${BACKUP_DB_USER}:****@${BACKUP_DB_HOST}..."
             
-            echo "-- TODO IMPLEMENT ACTUAL BACKUP STEP"
+            echo "---- Dumping DB..."
+            mysqldump --user=${BACKUP_DB_USER} --password=${BACKUP_DB_PASSWORD} --lock-tables --databases ${BACKUP_DB_NAME} | gzip > ${BACKUP_DB_PATH}/${BACKUP_DB_NAME}-${TODAY}.sql.gz
+            echo "---- Pushing to S3..."
+            aws s3 mv ${BACKUP_DB_PATH}/${BACKUP_DB_NAME}-${TODAY}.sql.gz s3://${BACKUP_DB_S3}/${SERVER_NAME}/${BACKUP_DB_NAME}/${BACKUP_DB_NAME}-${TODAY}.sql.gz
+            echo "---- Removing local copy..."
+            rm -rf ${BACKUP_DB_PATH}/${BACKUP_DB_NAME}-${TODAY}.sql.gz
             
             echo "-- Backup complete."
         else
