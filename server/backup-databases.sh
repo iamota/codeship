@@ -5,7 +5,8 @@ BACKUP_DB_S3="iamota-db-backups"
 ENVIRONMENT="${ENVIRONMENT:-unknown}"
 SERVER_NAME="${SERVER_NAME:-iamota-${ENVIRONMENT}}"
 
-        
+mkdir -p ${BACKUP_DB_PATH}
+
 for d in /mnt/nginx/* ; do
     [ -L "${d%/}" ] && continue
     
@@ -22,9 +23,9 @@ for d in /mnt/nginx/* ; do
         if [[ ${BACKUP_DB_HOST} && ${BACKUP_DB_USER} && ${BACKUP_DB_PASSWORD} && ${BACKUP_DB_NAME} ]]; then
             echo "-- Backing up ${BACKUP_DB_NAME} from ${BACKUP_DB_USER}:****@${BACKUP_DB_HOST}..."
             
-            echo "---- Dumping DB..."
+            echo "---- Dumping DB (${BACKUP_DB_PATH}/${BACKUP_DB_NAME}-${TODAY}.sql.gz)..."
             mysqldump --user=${BACKUP_DB_USER} --password=${BACKUP_DB_PASSWORD} --lock-tables --databases ${BACKUP_DB_NAME} | gzip > ${BACKUP_DB_PATH}/${BACKUP_DB_NAME}-${TODAY}.sql.gz
-            echo "---- Pushing to S3..."
+            echo "---- Pushing to S3 (s3://${BACKUP_DB_S3}/${SERVER_NAME}/${BACKUP_DB_NAME}/${BACKUP_DB_NAME}-${TODAY}.sql.gz)..."
             aws s3 mv ${BACKUP_DB_PATH}/${BACKUP_DB_NAME}-${TODAY}.sql.gz s3://${BACKUP_DB_S3}/${SERVER_NAME}/${BACKUP_DB_NAME}/${BACKUP_DB_NAME}-${TODAY}.sql.gz
             echo "---- Removing local copy..."
             rm -rf ${BACKUP_DB_PATH}/${BACKUP_DB_NAME}-${TODAY}.sql.gz
