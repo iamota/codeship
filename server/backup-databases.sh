@@ -23,8 +23,10 @@ for d in /mnt/nginx/* ; do
             
             echo "---- Dumping DB (${BACKUP_DB_PATH}/${BACKUP_DB_NAME}-${TODAY}--${BACKUP_DB_ENVIRONMENT}.sql.gz)..."
             mysqldump --user=${BACKUP_DB_USER} --password=${BACKUP_DB_PASSWORD} --lock-tables --databases ${BACKUP_DB_NAME} | gzip > ${BACKUP_DB_PATH}/${BACKUP_DB_NAME}-${TODAY}--${BACKUP_DB_ENVIRONMENT}.sql.gz
+            
             echo "---- Pushing to S3 (s3://${BACKUP_DB_S3}/iamota-${BACKUP_DB_ENVIRONMENT}/${BACKUP_DB_NAME}/${BACKUP_DB_NAME}-${TODAY}--${BACKUP_DB_ENVIRONMENT}.sql.gz)..."
             aws s3 mv ${BACKUP_DB_PATH}/${BACKUP_DB_NAME}-${TODAY}--${BACKUP_DB_ENVIRONMENT}.sql.gz s3://${BACKUP_DB_S3}/iamota-${BACKUP_DB_ENVIRONMENT}/${BACKUP_DB_NAME}/${BACKUP_DB_NAME}-${TODAY}--${BACKUP_DB_ENVIRONMENT}.sql.gz
+            
             echo "---- Removing local copy..."
             rm -rf ${BACKUP_DB_PATH}/${BACKUP_DB_NAME}-${TODAY}--${BACKUP_DB_ENVIRONMENT}.sql.gz
             
