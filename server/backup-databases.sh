@@ -1,3 +1,5 @@
+#!/bin/bash
+
 TODAY=`date +"%Y-%b-%d"`
 BACKUP_DB_PATH="/tmp/db-backups"
 BACKUP_DB_S3="iamota-db-backups"
