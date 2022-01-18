@@ -1,6 +1,9 @@
 #!/bin/bash
 
-TODAY=`date +"%Y-%b-%d"`
+TODAY=`date +"%Y-%b-%d"`  # e.g. 2022-Jan-01
+DAYOFMONTH=`date +"%d"`   # e.g. 01
+DAYOFWEEK=`date +"%a"`    # e.g. Sat
+
 BACKUP_DB_PATH="/tmp/db-backups"
 BACKUP_DB_S3="iamota-db-backups"
 
@@ -23,14 +26,25 @@ for d in /mnt/nginx/* ; do
         if [[ ${BACKUP_DB_HOST} && ${BACKUP_DB_USER} && ${BACKUP_DB_PASSWORD} && ${BACKUP_DB_NAME} && ${BACKUP_DB_ENVIRONMENT} ]]; then
             echo "-- Backing up ${BACKUP_DB_NAME} from ${BACKUP_DB_USER}:****@${BACKUP_DB_HOST}..."
             
-            echo "---- Dumping DB (${BACKUP_DB_PATH}/${BACKUP_DB_NAME}-${TODAY}--${BACKUP_DB_ENVIRONMENT}.sql.gz)..."
-            mysqldump --user=${BACKUP_DB_USER} --password=${BACKUP_DB_PASSWORD} --lock-tables --databases ${BACKUP_DB_NAME} | gzip > ${BACKUP_DB_PATH}/${BACKUP_DB_NAME}-${TODAY}--${BACKUP_DB_ENVIRONMENT}.sql.gz
+            BACKUP_FILENAME="${BACKUP_DB_NAME}-${TODAY}--${BACKUP_DB_ENVIRONMENT}.sql.gz"
+            BACKUP_FILE="${BACKUP_DB_PATH}/BACKUP_FILENAME"
+            BACKUP_S3_KEY="iamota-${BACKUP_DB_ENVIRONMENT}/${BACKUP_DB_NAME}/${BACKUP_FILENAME}"
+            BACKUP_S3_LINK="s3://${BACKUP_DB_S3}/${BACKUP_S3_KEY}"
             
-            echo "---- Pushing to S3 (s3://${BACKUP_DB_S3}/iamota-${BACKUP_DB_ENVIRONMENT}/${BACKUP_DB_NAME}/${BACKUP_DB_NAME}-${TODAY}--${BACKUP_DB_ENVIRONMENT}.sql.gz)..."
-            aws s3 mv ${BACKUP_DB_PATH}/${BACKUP_DB_NAME}-${TODAY}--${BACKUP_DB_ENVIRONMENT}.sql.gz s3://${BACKUP_DB_S3}/iamota-${BACKUP_DB_ENVIRONMENT}/${BACKUP_DB_NAME}/${BACKUP_DB_NAME}-${TODAY}--${BACKUP_DB_ENVIRONMENT}.sql.gz
+            echo "---- Dumping DB (${BACKUP_FILE_PATH})..."
+            mysqldump --user=${BACKUP_DB_USER} --password=${BACKUP_DB_PASSWORD} --lock-tables --databases ${BACKUP_DB_NAME} | gzip > ${BACKUP_FILE}
+            
+            echo "---- Pushing to S3 (${BACKUP_S3_LINK})..."
+            aws s3 mv ${BACKUP_FILE} ${BACKUP_S3_LINK}
+            
+            echo "---- Tagging object in S3 ({environment: ${BACKUP_DB_ENVIRONMENT}, Database: ${BACKUP_DB_NAME}, DayOfMonth: ${DAYOFMONTH}, DayOfWeek: ${DAYOFWEEK}})"
+            aws s3api put-object-tagging \
+                --bucket ${BACKUP_DB_S3} \
+                --key ${BACKUP_S3_KEY} \
+                --tagging "{\"TagSet\": [ { \"Key\": \"environment\", \"Value\": \"${BACKUP_DB_ENVIRONMENT}\" }, { \"Key\": \"Database\", \"Value\": \"${BACKUP_DB_NAME}\" }, { \"Key\": \"DayOfMonth\", \"Value\": \"${DAYOFMONTH}\" }, { \"Key\": \"DayOfWeek\", \"Value\": \"${DAYOFWEEK}\" } ]}"
             
             echo "---- Removing local copy..."
-            rm -rf ${BACKUP_DB_PATH}/${BACKUP_DB_NAME}-${TODAY}--${BACKUP_DB_ENVIRONMENT}.sql.gz
+            rm -rf ${BACKUP_FILE}
             
             echo "-- Backup complete."
         else
