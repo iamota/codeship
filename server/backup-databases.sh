@@ -27,7 +27,7 @@ for d in /mnt/nginx/* ; do
             echo "-- Backing up ${BACKUP_DB_NAME} from ${BACKUP_DB_USER}:****@${BACKUP_DB_HOST}..."
             
             BACKUP_FILENAME="${BACKUP_DB_NAME}-${TODAY}--${BACKUP_DB_ENVIRONMENT}.sql.gz"
-            BACKUP_FILE="${BACKUP_DB_PATH}/BACKUP_FILENAME"
+            BACKUP_FILE="${BACKUP_DB_PATH}/${BACKUP_FILENAME}"
             BACKUP_S3_KEY="iamota-${BACKUP_DB_ENVIRONMENT}/${BACKUP_DB_NAME}/${BACKUP_FILENAME}"
             BACKUP_S3_LINK="s3://${BACKUP_DB_S3}/${BACKUP_S3_KEY}"
             
