@@ -31,7 +31,7 @@ for d in /mnt/nginx/* ; do
             BACKUP_S3_KEY="iamota-${BACKUP_DB_ENVIRONMENT}/${BACKUP_DB_NAME}/${BACKUP_FILENAME}"
             BACKUP_S3_LINK="s3://${BACKUP_DB_S3}/${BACKUP_S3_KEY}"
             
-            echo "---- Dumping DB (${BACKUP_FILE_PATH})..."
+            echo "---- Dumping DB (${BACKUP_DB_NAME} to ${BACKUP_FILE})..."
             mysqldump --user=${BACKUP_DB_USER} --password=${BACKUP_DB_PASSWORD} --lock-tables --databases ${BACKUP_DB_NAME} | gzip > ${BACKUP_FILE}
             
             echo "---- Pushing to S3 (${BACKUP_S3_LINK})..."
