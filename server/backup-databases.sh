@@ -4,6 +4,9 @@ TODAY=`date +"%Y-%b-%d"`  # e.g. 2022-Jan-01
 DAYOFMONTH=`date +"%d"`   # e.g. 01
 DAYOFWEEK=`date +"%a"`    # e.g. Sat
 
+# Define BACKUPTYPE (1st backup of the month is a "Monthly" backup, rest are "Daily")
+[[ $DAYOFMONTH = 1 ]] && BACKUPTYPE="Monthly" || BACKUPTYPE="Daily"
+
 BACKUP_DB_PATH="/tmp/db-backups"
 BACKUP_DB_S3="iamota-db-backups"
 
@@ -37,11 +40,11 @@ for d in /mnt/nginx/* ; do
             echo "---- Pushing to S3 (${BACKUP_S3_LINK})..."
             aws s3 mv ${BACKUP_FILE} ${BACKUP_S3_LINK}
             
-            echo "---- Tagging object in S3 ({environment: ${BACKUP_DB_ENVIRONMENT}, Database: ${BACKUP_DB_NAME}, DayOfMonth: ${DAYOFMONTH}, DayOfWeek: ${DAYOFWEEK}})"
+            echo "---- Tagging object in S3 ({environment: ${BACKUP_DB_ENVIRONMENT}, Database: ${BACKUP_DB_NAME}, DayOfMonth: ${DAYOFMONTH}, DayOfWeek: ${DAYOFWEEK}, BackupType: ${BACKUPTYPE}})"
             aws s3api put-object-tagging \
                 --bucket ${BACKUP_DB_S3} \
                 --key ${BACKUP_S3_KEY} \
-                --tagging "{\"TagSet\": [ { \"Key\": \"environment\", \"Value\": \"${BACKUP_DB_ENVIRONMENT}\" }, { \"Key\": \"Database\", \"Value\": \"${BACKUP_DB_NAME}\" }, { \"Key\": \"DayOfMonth\", \"Value\": \"${DAYOFMONTH}\" }, { \"Key\": \"DayOfWeek\", \"Value\": \"${DAYOFWEEK}\" } ]}"
+                --tagging "{\"TagSet\": [ { \"Key\": \"environment\", \"Value\": \"${BACKUP_DB_ENVIRONMENT}\" }, { \"Key\": \"Database\", \"Value\": \"${BACKUP_DB_NAME}\" }, { \"Key\": \"DayOfMonth\", \"Value\": \"${DAYOFMONTH}\" }, { \"Key\": \"DayOfWeek\", \"Value\": \"${DAYOFWEEK}\" }, { \"Key\": \"BackupType\", \"Value\": \"${BACKUPTYPE}\" } ]}"
             
             echo "---- Removing local copy..."
             rm -rf ${BACKUP_FILE}
