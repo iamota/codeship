@@ -23,8 +23,8 @@ WHITE='\033[1;37m'
 # Defaults: --source=localhost --destination=localhost
 
 # Set defaults "localhost"
-source_prefix=localhost
-destination_prefix=localhost
+source_env=localhost
+destination_env=localhost
 skip_config=false
 skip_schema=${skip_config}
 skip_data=${skip_config}
@@ -48,8 +48,8 @@ eval set -- "$TEMP"
 # Read what source/destination the user wants to skip
 while true; do
   case "$1" in
-    --source ) source_prefix="$2"; shift 2 ;;
-    --destination ) destination_prefix="$2"; shift 2 ;;
+    --source ) source_env="$2"; shift 2 ;;
+    --destination ) destination_env="$2"; shift 2 ;;
     --skip_config ) skip_config=true; skip_schema=true; skip_data=true; shift ;;
     --skip_schema ) skip_schema=true; shift ;;
     --skip_data ) skip_data=true; shift ;;
@@ -98,34 +98,34 @@ fi
 # ===================================================================
 # Validate Source Inputs
 
-var_source_store=conf_${source_prefix}_store
+var_source_store=conf_${source_env}_store
 if [ -z "${!var_source_store}" ]
 then
-  echo -e "${RED}Error: '${LTRED}store${RED}' not defined in ${LTRED}config.yml${RED} for source '${LTRED}${source_prefix}${RED}'${NC}"
+  echo -e "${RED}Error: '${LTRED}store${RED}' not defined in ${LTRED}config.yml${RED} for source '${LTRED}${source_env}${RED}'${NC}"
 else
   source_store=${!var_source_store}
 fi
 
-var_source_password=conf_${source_prefix}_password
+var_source_password=conf_${source_env}_password
 if [ -z "${!var_source_password}" ]
 then
-  echo -e "${RED}Error: '${LTRED}password${RED}' not defined in ${LTRED}config.yml${RED} for source '${LTRED}${source_prefix}${RED}'${NC}"
+  echo -e "${RED}Error: '${LTRED}password${RED}' not defined in ${LTRED}config.yml${RED} for source '${LTRED}${source_env}${RED}'${NC}"
 else
   source_password=${!var_source_password}
 fi
 
-var_source_theme_id=conf_${source_prefix}_theme_id
+var_source_theme_id=conf_${source_env}_theme_id
 if [ -z "${!var_source_theme_id}" ]
 then
-  echo -e "${RED}Error: '${LTRED}theme_id${RED}' not defined in ${LTRED}config.yml${RED} for source '${LTRED}${source_prefix}${RED}'${NC}"
+  echo -e "${RED}Error: '${LTRED}theme_id${RED}' not defined in ${LTRED}config.yml${RED} for source '${LTRED}${source_env}${RED}'${NC}"
 else
   source_theme_id=${!var_source_theme_id}
 fi
 
-var_source_directory=conf_${source_prefix}_directory
+var_source_directory=conf_${source_env}_directory
 if [ -z "${!var_source_directory}" ]
 then
-  echo -e "${RED}Error: '${LTRED}directory${RED}' not defined in ${LTRED}config.yml${RED} for source '${LTRED}${source_prefix}${RED}'${NC}"
+  echo -e "${RED}Error: '${LTRED}directory${RED}' not defined in ${LTRED}config.yml${RED} for source '${LTRED}${source_env}${RED}'${NC}"
 else
   source_directory=${!var_source_directory}
 fi
@@ -134,34 +134,34 @@ fi
 # ===================================================================
 # Validate Destination Inputs
 
-var_destination_store=conf_${destination_prefix}_store
+var_destination_store=conf_${destination_env}_store
 if [ -z "${!var_destination_store}" ]
 then
-  echo -e "${RED}Error: '${LTRED}store${RED}' not defined in ${LTRED}config.yml${RED} for destination '${LTRED}${destination_prefix}${RED}'${NC}"
+  echo -e "${RED}Error: '${LTRED}store${RED}' not defined in ${LTRED}config.yml${RED} for destination '${LTRED}${destination_env}${RED}'${NC}"
 else
   destination_store=${!var_destination_store}
 fi
 
-var_destination_password=conf_${destination_prefix}_password
+var_destination_password=conf_${destination_env}_password
 if [ -z "${!var_destination_password}" ]
 then
-  echo -e "${RED}Error: '${LTRED}password${RED}' not defined in ${LTRED}config.yml${RED} for destination '${LTRED}${destination_prefix}${RED}'${NC}"
+  echo -e "${RED}Error: '${LTRED}password${RED}' not defined in ${LTRED}config.yml${RED} for destination '${LTRED}${destination_env}${RED}'${NC}"
 else
   destination_password=${!var_destination_password}
 fi
 
-var_destination_theme_id=conf_${destination_prefix}_theme_id
+var_destination_theme_id=conf_${destination_env}_theme_id
 if [ -z "${!var_destination_theme_id}" ]
 then
-  echo -e "${RED}Error: '${LTRED}theme_id${RED}' not defined in ${LTRED}config.yml${RED} for destination '${LTRED}${destination_prefix}${RED}'${NC}"
+  echo -e "${RED}Error: '${LTRED}theme_id${RED}' not defined in ${LTRED}config.yml${RED} for destination '${LTRED}${destination_env}${RED}'${NC}"
 else
   destination_theme_id=${!var_destination_theme_id}
 fi
 
-var_destination_directory=conf_${destination_prefix}_directory
+var_destination_directory=conf_${destination_env}_directory
 if [ -z "${!var_destination_directory}" ]
 then
-  echo -e "${RED}Error: '${LTRED}directory${RED}' not defined in ${LTRED}config.yml${RED} for destination '${LTRED}${destination_prefix}${RED}'${NC}"
+  echo -e "${RED}Error: '${LTRED}directory${RED}' not defined in ${LTRED}config.yml${RED} for destination '${LTRED}${destination_env}${RED}'${NC}"
 else
   destination_directory=${!var_destination_directory}
 fi
@@ -219,13 +219,13 @@ echo -e ""
 echo -e "=============================================================="
 echo -e "${WHITE}SETTINGS${NC}"
 echo -e "=============================================================="
-echo -e "Source:                ${WHITE}${source_prefix}${NC}"
+echo -e "Source:                ${WHITE}${source_env}${NC}"
 echo -e "Source Store:          ${WHITE}${source_store}${NC}"
 echo -e "Source Password:       ${WHITE}${source_password}${NC}"
 echo -e "Source Theme ID:       ${WHITE}${source_theme_id}${NC}"
 echo -e "Source Directory:      ${WHITE}${source_directory}${NC}"
 echo -e "--------------------------------------------------------------"
-echo -e "Destination:           ${WHITE}${destination_prefix}${NC}"
+echo -e "Destination:           ${WHITE}${destination_env}${NC}"
 echo -e "Destination Store:     ${WHITE}${destination_store}${NC}"
 echo -e "Destination Password:  ${WHITE}${destination_password}${NC}"
 echo -e "Destination Theme ID:  ${WHITE}${destination_theme_id}${NC}"
@@ -267,15 +267,15 @@ fi
 
 echo ""
 echo ""
-echo -e "Getting source files from '${WHITE}${source_prefix}${NC}'..."
+echo -e "Getting source files from '${WHITE}${source_env}${NC}'..."
 #theme get --verbose --store="${source_store}" --password="${source_password}" --themeid="${source_theme_id}" --dir="${source_directory}" ${source_file_list}
 echo ""
 
 # ===================================================================
 # If Syncing to localhost, also copy the files over to /src
-if [[ $destination_prefix == "localhost" && $replace_src == true ]]
+if [[ $destination_env == "localhost" && $replace_src == true ]]
 then
-    echo -e "Replacing ${WHITE}/src${NC} with files sync'd from ${WHITE}${source_prefix}${NC}..."
+    echo -e "Replacing ${WHITE}/src${NC} with files sync'd from ${WHITE}${source_env}${NC}..."
 
     for source_pattern in $source_file_list
     do
@@ -319,7 +319,7 @@ then
 
     done
 
-    echo -e "${YELLOW}Note: files that were not found on ${WHITE}${source_prefix}${YELLOW} have not been deleted from ${WHITE}/src${YELLOW}, you must manually do this (if relevant)."
+    echo -e "${YELLOW}Note: files that were not found on ${WHITE}${source_env}${YELLOW} have not been deleted from ${WHITE}/src${YELLOW}, you must manually do this (if relevant)."
     # TODO: can we automate this? safely?
     echo ""
 fi
@@ -362,7 +362,7 @@ fi
 
 echo ""
 echo ""
-echo -e "Deploying to destination '${WHITE}${destination_prefix}${NC}'..."
+echo -e "Deploying to destination '${WHITE}${destination_env}${NC}'..."
 if [[ $verbose ]]
 then
     echo "Files to sync:"
