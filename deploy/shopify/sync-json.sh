@@ -268,7 +268,7 @@ fi
 echo ""
 echo ""
 echo -e "Getting source files from '${WHITE}${source_env}${NC}'..."
-#theme get --verbose --store="${source_store}" --password="${source_password}" --themeid="${source_theme_id}" --dir="${source_directory}" ${source_file_list}
+theme get --verbose --store="${source_store}" --password="${source_password}" --themeid="${source_theme_id}" --dir="${source_directory}" ${source_file_list}
 echo ""
 
 # ===================================================================
@@ -297,7 +297,7 @@ then
                 if [[ ${old_file} ]]
                 then
                     echo -e "${GREEN}~${NC} Replacing '${WHITE}${old_file}${NC}'..."
-                    #mv ${new_file} ${old_file}
+                    cp ${new_file} ${old_file}
                     if $verbose; then echo ""; fi;
                 else
                     if [[ $verbose == true ]]
@@ -305,7 +305,7 @@ then
                         echo -e "Unable to find '${WHITE}${new_file##*/}${NC}' [${WHITE}$new_file${NC}] in ${WHITE}/src${NC}; assuming it's new..."
                     fi
                     echo -e "${GREEN}+${NC} Adding '${WHITE}${new_file/$source_directory/src}${NC}'..."
-                    #mv ${new_file} ${new_file/$source_directory/src}
+                    cp ${new_file} ${new_file/$source_directory/src}
                     if $verbose; then echo ""; fi
                 fi
 
