@@ -293,10 +293,15 @@ then
             if [[ ${new_file##*/} ]]
             then
                 old_file="$(find src/ -name ${new_file##*/} | tail -n1)"
+                old_file_liquid="${old_file/\.json$/.liquid}"
 
                 if [[ ${old_file} ]]
                 then
-                    echo -e "${GREEN}~${NC} Replacing '${WHITE}${old_file}${NC}'..."
+                    echo -e "${GREEN}~${NC} Replacing '${WHITE}${old_file}${NC}' with '${WHITE}${new_file}${NC}'..."
+                    if [[ ${old_file_liquid} ]]
+                    then
+                        rm -f ${old_file_liquid}
+                    fi
                     cp ${new_file} ${old_file}
                     if $verbose; then echo ""; fi;
                 else
@@ -305,6 +310,10 @@ then
                         echo -e "Unable to find '${WHITE}${new_file##*/}${NC}' [${WHITE}$new_file${NC}] in ${WHITE}/src${NC}; assuming it's new..."
                     fi
                     echo -e "${GREEN}+${NC} Adding '${WHITE}${new_file/$source_directory/src}${NC}'..."
+                    if [[ ${old_file_liquid} ]]
+                    then
+                        rm -f ${old_file_liquid}
+                    fi
                     cp ${new_file} ${new_file/$source_directory/src}
                     if $verbose; then echo ""; fi
                 fi
