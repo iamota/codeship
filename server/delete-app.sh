@@ -94,9 +94,12 @@ fi
 sudo mv /mnt/nginx/${APP_NAME} /mnt/archive/${APP_NAME}
 
 # Done
-echo "--"
-echo "${APP_NAME} has been removed."
-echo "The code has been archived in /mnt/archive/${APP_NAME}"
 echo ""
-echo "If you want to remove it entirely, you can run:"
-echo "sudo rm -rf /mnt/archive/${APP_NAME}"
+echo "###############################################################################"
+echo "# ${APP_NAME} has been removed."
+echo "# The code has been archived in /mnt/archive/${APP_NAME}"
+echo "###############################################################################"
+echo "# If you want to remove it entirely, you can run:"
+echo "# sudo rm -rf /mnt/archive/${APP_NAME}"
+echo "###############################################################################"
+echo ""
