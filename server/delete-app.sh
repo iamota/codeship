@@ -1,14 +1,13 @@
 #!/bin/bash
 
 ###############################################################################
-# Setup an App
+# Delete an App
 ###############################################################################
-# - Create folders for /mnt/ngnix/[app-name]/curernt
-# - Create .env stub
-# - Create database
-# - Register wtih Nginx
-# - Register with CloudWatch
-# - Add Codeship delpoyment keys
+# - Remove SSL Certificates
+# - Remove Let's Encrypt registration
+# - Remove Nginx registration + restart Nginx
+# - Remove CloudWatch log registration + restart CloudWatch Log Monitor
+# - Archive the code in /mnt/archive/[app-name]
 ###############################################################################
 
 # Abort on Error
@@ -87,7 +86,17 @@ sudo crudini --del /etc/awslogs/awslogs.conf "${SERVER_NAME}/${APP_NAME}/sucuri-
 echo "Restarting CloudWatch log monitor..."
 sudo systemctl restart awslogsd
 
+# Move Code to Archive
+echo "Archiving Code..."
+if [ ! -d "/mnt/archive" ]; then
+    sudo mkdir -p /mnt/archive
+fi
+sudo mv /mnt/nginx/${APP_NAME} /mnt/archive/${APP_NAME}
+
 # Done
-echo "App ${APP_NAME} has been removed."
-echo "If you're 100% sure, you can delete the code now:"
-echo "sudo rm -rf /mnt/nginx/${APP_NAME}"
+echo "--"
+echo "${APP_NAME} has been removed."
+echo "The code has been archived in /mnt/archive/${APP_NAME}"
+echo ""
+echo "If you want to remove it entirely, you can run:"
+echo "sudo rm -rf /mnt/archive/${APP_NAME}"
