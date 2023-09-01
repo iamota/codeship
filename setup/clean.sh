@@ -16,7 +16,9 @@ set -e
 
 ### Clean Git
 echo -e "\e[1;40;32mCleanup Git..."
-git clean -fd
+if [ ! -d ".git" ]; then
+    git clean -fd
+fi
 rm -rf .git
 rm -rf .gitignore
 rm -rf .gitattributes
