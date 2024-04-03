@@ -33,7 +33,7 @@ sudo rm -f /etc/ssl/${APP_NAME}.key
 # Remove Let's Encrypt Registration
 echo "Removing Let's Encrypt Registration..."
 sudo rm -f /etc/letsencrypt/renewal/${APP_NAME}.conf
-sudo rm -f /etc/letsencrypt/live/${APP_NAME}
+sudo rm -rf /etc/letsencrypt/live/${APP_NAME}
 
 # Register Site with Nginx
 echo "Un-Registering Site with Nginx..."
