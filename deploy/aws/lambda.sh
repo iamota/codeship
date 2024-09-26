@@ -43,7 +43,7 @@ FUNCTION_SHA256=`aws lambda update-function-code --function-name $FUNCTION_NAME 
 echo $FUNCTION_SHA256
 
 # Sleep for 3 seconds so the code can finish deploying
-sleep 3
+sleep 10
 
 # Publishing a new Version of the Lambda function
 FUNCTION_VERSION=`aws lambda publish-version --function-name $FUNCTION_NAME --code-sha256 $FUNCTION_SHA256 --description "$CI_COMMIT_ID" | jq -r .Version`
